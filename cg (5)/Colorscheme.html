@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+
+    <link rel="stylesheet" href="./global.css" />
+    <link rel="stylesheet" href="./Colorscheme.module.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap"
+    />
+  </head>
+  <body>
+    <div class="colorscheme">
+      <section class="colorscheme-child"></section>
+      <canvas class="colorscheme-item"> </canvas>
+      <div class="cmyk">
+        <h1 class="cmyk1">CMYK</h1>
+        <input class="cmyk-child" type="text" />
+
+        <input class="cmyk-item" type="text" />
+
+        <input class="cmyk-inner" type="text" />
+
+        <button class="rectangle-button"></button>
+        <h1 class="h115">Застосувати</h1>
+        <input class="cmyk-child1" type="text" />
+
+        <button class="cmyk-child2"></button>
+        <h1 class="h116">Скинути</h1>
+      </div>
+      <div class="hsv">
+        <input class="hsv-child" type="text" />
+
+        <button class="hsv-item"></button>
+        <h1 class="cmyk1">HSV</h1>
+        <input class="hsv-inner" type="text" />
+
+        <input class="hsv-child1" type="text" />
+
+        <button class="hsv-child2"></button>
+        <h1 class="h117">Скинути</h1>
+        <h1 class="h118">Застосувати</h1>
+      </div>
+      <div class="scale-of-brightness">
+        <div class="scale-of-brightness-child"></div>
+        <div class="scale-of-brightness-item"></div>
+        <div class="div23">0%</div>
+        <div class="div24">75%</div>
+        <h2 class="h2">Яскравість</h2>
+      </div>
+      <div class="blue-saturation">
+        <div class="blue-saturation-child"></div>
+        <div class="blue-saturation-item"></div>
+        <div class="div25">0%</div>
+        <div class="div26">10%</div>
+        <h2 class="h2">Насиченість синього</h2>
+      </div>
+      <button class="button3" id="button">
+        <h1 class="h119">Повернутись до меню</h1>
+      </button>
+      <button class="button4">
+        <h1 class="h119">Зберегти у файл</h1>
+      </button>
+    </div>
+
+    <script>
+      var button = document.getElementById("button");
+      if (button) {
+        button.addEventListener("click", function (e) {
+          window.location.href = "./index.html";
+        });
+      }
+      </script>
+  </body>
+</html>

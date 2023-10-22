@@ -1,0 +1,111 @@
+.child,
+.item {
+  position: absolute;
+  top: 139px;
+  left: 71px;
+  border-radius: var(--br-5xs);
+  background-color: var(--color-white);
+  width: 734px;
+  height: 549px;
+}
+.item {
+  border: 1px solid var(--color-black);
+  background-color: var(--color-whitesmoke);
+  top: 295px;
+  left: 1019px;
+  border-radius: var(--br-10xs);
+  box-sizing: border-box;
+  width: 275px;
+  height: 35px;
+}
+.div13 {
+  position: relative;
+  font-size: var(--font-size-4xl);
+  font-family: var(--font-inter);
+  color: var(--color-black);
+  text-align: center;
+  display: inline-block;
+  width: 220.9px;
+  height: 31.4px;
+  flex-shrink: 0;
+}
+.drawbutton1 {
+  cursor: pointer;
+  border: 1px solid var(--color-gray-200);
+  padding: 0 21.1695499420166px;
+  background-color: var(--color-powderblue);
+  position: absolute;
+  top: 443px;
+  left: 1024px;
+  border-radius: var(--br-11xs);
+  box-sizing: border-box;
+  width: 266px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.inner {
+  position: absolute;
+  top: 55px;
+  left: 236px;
+  width: 404px;
+  height: 62px;
+}
+
+.inner {
+  width: 300px;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 16px;
+  text-align: center;
+  justify-content: flex-end;
+  position: undefined;
+  margin-left: 50px;
+}
+
+
+.h12 {
+  margin: 0;
+  position: relative;
+  font-size: var(--font-size-4xl);
+  font-weight: 400;
+  font-family: var(--font-inter);
+  color: var(--color-black);
+  text-align: center;
+  display: inline-block;
+  width: 358px;
+  height: 35px;
+  flex-shrink: 0;
+}
+.button1,
+.div12 {
+  box-sizing: border-box;
+}
+.button1 {
+  cursor: pointer;
+  border: 1px solid var(--color-gray-200);
+  padding: var(--padding-7xs) 0;
+  background-color: var(--color-whitesmoke);
+  position: absolute;
+  top: 616px;
+  left: 978px;
+  border-radius: var(--br-11xs);
+  width: 358px;
+  height: 48px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+.div12 {
+  position: relative;
+  border-radius: var(--br-5xs);
+  background-color: var(--color-lightcyan);
+  border: 1px solid var(--color-black);
+  width: 100%;
+  height: 841px;
+}
