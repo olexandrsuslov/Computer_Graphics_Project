@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Фрактал Вічека</title>
+  <style>
+    body {
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    canvas {
+      display: block;
+      margin: 0 auto;
+      border: 1px solid black;
+      background-color: white; /* Встановлюємо білий фон */
+    }
+
+    input {
+      width: 100px;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Фрактал Вічека</h1>
+  <label for="iterations">Кількість ітерацій:</label>
+  <input type="number" id="iterations" value="5">
+  <br>
+  <button id="generate">Генерувати</button>
+  <button id="save">Зберегти у файл</button>
+  <canvas id="fractalCanvas"></canvas>
+  <script>
+    const canvas = document.getElementById("fractalCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let iterations;
+    canvas.width = 800;
+    canvas.height = 800;
+
+    function drawVicsek(x, y, size, iterations) {
+      if (iterations === 0) {
+        ctx.fillRect(x, y, size, size); // Заповнюємо центральний квадрат
+      } else {
+        const newSize = size / 3;
+        const offset = newSize * 2;
+
+        // Залишаємо средній квадрат і квадрати зверху, знизу, зліва і справа від нього
+        drawVicsek(x + newSize, y + newSize, newSize, iterations - 1); // Середній квадрат
+        drawVicsek(x + newSize, y, newSize, iterations - 1); // Верхній квадрат
+        drawVicsek(x, y + newSize, newSize, iterations - 1); // Лівий квадрат
+        drawVicsek(x + offset, y + newSize, newSize, iterations - 1); // Правий квадрат
+        drawVicsek(x + newSize, y + offset, newSize, iterations - 1); // Нижній квадрат
+      }
+    }
+
+    function generateFractal() {
+      iterations = parseInt(document.getElementById("iterations").value);
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "black"; // Встановлюємо чорний колір для фрактала
+      const size = canvas.width;
+      drawVicsek(0, 0, size, iterations);
+    }
+
+    function saveFractal() {
+      const link = document.createElement("a");
+      link.download = "fractal_Vichsek.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }
+
+    document.getElementById("generate").addEventListener("click", generateFractal);
+    document.getElementById("save").addEventListener("click", saveFractal);
+  </script>
+</body>
+</html>
