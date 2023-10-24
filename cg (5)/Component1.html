@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+
+    <link rel="stylesheet" href="./global.css" />
+    <link rel="stylesheet" href="./Component1.module.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap"
+    />
+  </head>
+  <body>
+    <div class="div12">
+      <canvas class="child" id="fractalCanvas"> </canvas>
+      <label class="item2" for="iterations">Кількість ітерацій:</label>
+      <input class="item" type="number" id="iterations" value="5"/>
+
+      <button class="drawbutton1" id="generate">
+        <div class="div13">Намалювати</div>
+      </button>
+      <button class="drawbutton2" id="save"><div class="div13">Зберегти у файл</div></button>
+      <div>
+        <select class="inner" onchange="location = this.value;">
+          <option value="Component1.html">Вічека</option>
+          <option value="Component.html">Мандельброта і Жюліа</option>
+        </select>
+      </div>
+      <button class="button1" id="button">
+        <h1 class="h12">Повернутись до меню</h1>
+      </button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("fractalCanvas");
+        const ctx = canvas.getContext("2d");
+        let iterations;
+        canvas.width = 800;
+        canvas.height = 800;
+
+
+        var button = document.getElementById("button");
+        if (button) {
+          button.addEventListener("click", function (e) {
+            window.location.href = "./index.html";
+          });
+        }
+
+      function drawVicsek(x, y, size, iterations) {
+        if (iterations === 0) {
+          ctx.fillRect(x, y, size, size); // Заповнюємо центральний квадрат
+        } else {
+          const newSize = size / 3;
+          const offset = newSize * 2;
+
+          // Залишаємо средній квадрат і квадрати зверху, знизу, зліва і справа від нього
+          drawVicsek(x + newSize, y + newSize, newSize, iterations - 1); // Середній квадрат
+          drawVicsek(x + newSize, y, newSize, iterations - 1); // Верхній квадрат
+          drawVicsek(x, y + newSize, newSize, iterations - 1); // Лівий квадрат
+          drawVicsek(x + offset, y + newSize, newSize, iterations - 1); // Правий квадрат
+          drawVicsek(x + newSize, y + offset, newSize, iterations - 1); // Нижній квадрат
+        }
+      }
+
+      function generateFractal() {
+        iterations = parseInt(document.getElementById("iterations").value);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "black"; // Встановлюємо чорний колір для фрактала
+        const size = canvas.width;
+        drawVicsek(0, 0, size, iterations);
+      }
+
+      function saveFractal() {
+        const link = document.createElement("a");
+        link.download = "fractal_Vichsek.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      }
+
+      document.getElementById("generate").addEventListener("click", generateFractal);
+      document.getElementById("save").addEventListener("click", saveFractal);
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,158 @@
+.learning {
+    display: flex;
+    flex-direction: column;
+    /* width: 100%;
+    height: 100%; */
+    position: relative;
+    align-items: flex-end;
+    gap: 24px;
+    padding: 23px 39px 38px;
+    background-color: #ddf6f7;
+    border: 1px solid;
+    border-color: #000000;
+  }
+  
+  .learning .frame {
+    flex-direction: column;
+    width: 1314px;
+    height: 100%;
+    align-items: flex-start;
+    justify-content: center;
+    flex: 0 0 auto;
+    display: flex;
+    position: relative;
+  }
+  
+  .learning .div {
+    width: 1276px;
+    height: 573px;
+    align-items: flex-start;
+    justify-content: flex-end;
+    display: flex;
+    position: relative;
+  }
+  
+  .learning .element-z-n-z-n-c-wrapper {
+    flex-direction: column;
+    width: 1276px;
+    height: 573px;
+    align-items: center;
+    justify-content: flex-end;
+    display: flex;
+    position: relative;
+  }
+  
+  .learning .element-z-n-z-n-c {
+    position: relative;
+    width: 1276px;
+    text-shadow: 1px 4px 4px #00000033;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    font-size: 24px;
+    text-align: justify;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .learning .text-wrapper {
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    font-size: 24px;
+    letter-spacing: 0;
+    top: 200px;
+  }
+  
+  .learning .span {
+    font-size: 20px;
+  }
+  
+  .learning .text-wrapper-2 {
+    font-size: 22px;
+  }
+  
+  .learning .text-wrapper-3 {
+    width: 370px;
+    height: 76px;
+    margin-top: -1px;
+    margin-left: -370px;
+    text-shadow: 0px 4px 4px #00000040;
+    font-size: 33px;
+    position: relative;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    right: 450px;
+  }
+  
+  .learning .frame-2 {
+    flex-direction: column;
+    width: 402px;
+    height: 134px;
+    align-items: flex-end;
+    gap: 18px;
+    display: flex;
+    position: relative;
+  }
+  
+  .learning .view {
+    width: 402px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+    padding: 6px 0px;
+    position: relative;
+    background-color: #faf9f9;
+    border-radius: 2px;
+    border: 1px solid;
+    border-color: #000000cc;
+  }
+  
+  .learning .text-wrapper-4 {
+    width: 402px;
+    height: 35px;
+    font-size: 25px;
+    position: relative;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .learning .div-wrapper {
+    width: 315px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+    padding: 6px 0px;
+    position: relative;
+    background-color: #faf9f9;
+    border-radius: 2px;
+    border: 1px solid;
+    border-color: #000000cc;
+  }
+  
+  .learning .text-wrapper-5 {
+    width: 315px;
+    height: 35px;
+    margin-top: -0.5px;
+    font-size: 23px;
+    position: relative;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  

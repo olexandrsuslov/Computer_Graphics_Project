@@ -1,0 +1,123 @@
+.learning {
+    background-color: #ddf6f7;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .learning .div {
+    background-color: #ddf6f7;
+    border: 1px solid;
+    border-color: #000000;
+    width: 1440px;
+    height: 792px;
+    position: relative;
+  }
+  
+  .learning .overlap-group {
+    position: absolute;
+    width: 1309px;
+    height: 570px;
+    top: 37px;
+    left: 54px;
+  }
+  
+  .learning .text-wrapper {
+    position: absolute;
+    width: 370px;
+    top: 0;
+    left: 481px;
+    text-shadow: 0px 4px 4px #00000040;
+    font-size: 33px;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .learning .CMYK-HSV-CMYK-cyan {
+    position: absolute;
+    width: 1309px;
+    top: 50px;
+    left: 0;
+    text-shadow: 1px 4px 4px #00000033;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    font-size: 18px;
+    text-align: justify;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .learning .frame {
+    display: flex;
+    flex-direction: column;
+    width: 402px;
+    height: 134px;
+    align-items: flex-end;
+    gap: 18px;
+    position: absolute;
+    top: 633px;
+    left: 997px;
+  }
+  
+  .learning .view {
+    width: 402px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+    padding: 6px 0px;
+    position: relative;
+    background-color: #faf9f9;
+    border-radius: 2px;
+    border: 1px solid;
+    border-color: #000000cc;
+  }
+  
+  .learning .text-wrapper-2 {
+    position: relative;
+    width: 402px;
+    height: 35px;
+    font-size: 25px;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .learning .div-wrapper {
+    width: 315px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+    padding: 6px 0px;
+    position: relative;
+    background-color: #faf9f9;
+    border-radius: 2px;
+    border: 1px solid;
+    border-color: #000000cc;
+  }
+  
+  .learning .text-wrapper-3 {
+    position: relative;
+    width: 315px;
+    height: 35px;
+    margin-top: -0.5px;
+    font-size: 23px;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+  }
