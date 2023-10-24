@@ -1,1 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Фрактали Мандельброта і Жюлія</title>
+  <style>
+    body {
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    canvas {
+      display: block;
+      margin: 0 auto;
+    }
+
+    input, #zoomSlider {
+      width: 100px;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Фрактали Мандельброта і Жюлія</h1>
+  <label for="c_real">Дійсна частина константи c:</label>
+  <input type="number" id="c_real" step="0.01" value="-0.7">
+  <br>
+  <label for="c_imag">Уявна частина константи c:</label>
+  <input type="number" id="c_imag" step="0.01" value="0.27015">
+  <br>
+  <label for="zoom">Масштаб:</label>
+  <input type="number" id="zoom" step="0.01" value="300">
+  <br>
+  <input type="range" id="zoomSlider" min="1" max="20" step="0.01" value="1">
+  <br>
+  <label for="colorPicker">Виберіть колір:</label>
+  <input type="color" id="colorPicker" value="#FF0000">
+  <br>
+  <button id="generate">Генерувати</button>
+  <button id="save">Зберегти</button>
+  <canvas id="fractalCanvas"></canvas>
+  <script>
+    const canvas = document.getElementById("fractalCanvas");
+    const ctx = canvas.getContext("2d");
+    let c_real, c_imag, zoom;
+    let colorPalette = null; // Кольорова гамма
+    const colorVariation = 30; // Різниця відтінків в кольоровій гаммі
+
+    const zoomSlider = document.getElementById("zoomSlider");
+    zoomSlider.addEventListener("input", function() {
+      document.getElementById("zoom").value = this.value;
+    });
+
+    const colorPicker = document.getElementById("colorPicker");
+    colorPicker.addEventListener("input", function() {
+      generateColorPalette(this.value);
+    });
+
+    function generateFractal() {
+      c_real = parseFloat(document.getElementById("c_real").value);
+      c_imag = parseFloat(document.getElementById("c_imag").value);
+      zoom = parseFloat(document.getElementById("zoom").value);
+
+      canvas.width = 800;
+      canvas.height = 600;
+
+      for (let x = 0; x < canvas.width; x++) {
+        for (let y = 0; y < canvas.height; y++) {
+          let a = map(x, 0, canvas.width, -zoom, zoom);
+          let b = map(y, 0, canvas.height, -zoom, zoom);
+          let n = 0;
+          let z_real = a;
+          let z_imag = b;
+
+          for (n = 0; n < 100; n++) {
+            let aa = z_real * z_real - z_imag * z_imag;
+            let bb = 2 * z_real * z_imag;
+            z_real = aa + c_real;
+            z_imag = bb + c_imag;
+
+            if (Math.abs(z_real + z_imag) > 16) {
+              break;
+            }
+          }
+
+          let color = getColor(n);
+          ctx.fillStyle = color;
+          ctx.fillRect(x, y, 1, 1);
+        }
+      }
+    }
+
+    function generateColorPalette(baseColor) {
+      colorPalette = [baseColor];
+
+      // Обчислення максимальної яскравості для червоного та жовтого кольорів
+      const maxBrightness = getMaxBrightness(baseColor);
+
+      // Додавання світліших та темніших відтінків до кольорової гами
+      for (let i = 1; i < 3; i++) {
+        colorPalette.push(shadeColor(baseColor, i * colorVariation, maxBrightness));
+        colorPalette.push(shadeColor(baseColor, -i * colorVariation, maxBrightness));
+      }
+    }
+
+    function getColor(n) {
+      // Вибір кольору з кольорової гами в залежності від n
+      if (colorPalette === null) {
+        return "#000000"; // Кольорова гамма не визначена, застосовуємо чорний колір
+      }
+      return colorPalette[n % colorPalette.length];
+    }
+
+    function shadeColor(color, percent, maxBrightness) {
+  let f = parseInt(color.slice(1), 16);
+  let R = (f >> 16) & 0x00FF;
+  let G = (f >> 8) & 0x00FF;
+  let B = f & 0x00FF;
+  R = clamp(R + percent, 0, 255);
+  G = clamp(G + percent, 0, 255);
+  B = clamp(B + percent, 0, 255);
+  return `#${((R << 16) | (G << 8) | B).toString(16)}`;
+}
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+    function getMaxBrightness(color) {
+      let f = parseInt(color.slice(1), 16);
+      let R = f >> 16;
+      let G = f >> 8 & 0x00FF;
+      let B = f & 0x0000FF;
+      return Math.max(R, G, B);
+    }
+
+    function map(value, min1, max1, min2, max2) {
+      return min2 + (max2 - min2) * ((value - min1) / (max1 - min1));
+    }
+
+    document.getElementById("generate").addEventListener("click", generateFractal);
+    document.getElementById("save").addEventListener("click", saveImage);
+
+    function saveImage() {
+      const dataURL = canvas.toDataURL("image/png");
+      const a = document.createElement("a");
+      a.href = dataURL;
+      a.download = "fractal.png";
+
+      // Видалення попереднього посилання (якщо воно існує)
+      const previousLink = document.getElementById("downloadLink");
+      if (previousLink) {
+        previousLink.remove();
+      }
+
+      // Додавання посилання для збереження з наступною назвою
+      a.id = "downloadLink";
+      a.style.display = "none";
+      document.body.appendChild(a);
+
+      // Симулювання кліку на посиланні для появи діалогу збереження
+      a.click();
+    }
+  </script>
+</body>
+</html>
 
