@@ -6,10 +6,9 @@
     position: relative;
     align-items: flex-end;
     gap: 24px;
-    padding: 23px 39px 38px;
+    padding: 30px 100px 30px 0px;
     background-color: #ddf6f7;
-    border: 1px solid;
-    border-color: #000000;
+
   }
   
   .learning .frame {

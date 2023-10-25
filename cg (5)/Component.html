@@ -31,8 +31,7 @@
               <input type="color" id="colorPicker" value="#FF0000">
               <div class="frame10">
               </div>
-              <button id="button">
-              </button>
+              
             <div class="frame11">
               <div class="div11">
                 <div>
@@ -49,7 +48,7 @@
               </button>
             </div>
           </div>
-          <button class="button" id="button">
+          <button class="button" id="backToMenu">
             <h1 class="h1">Повернутись до меню</h1>
           </button>
         </div>
@@ -57,12 +56,7 @@
     </div>
 
     <script>
-      var button = document.getElementById("button");
-      if (button) {
-        button.addEventListener("click", function (e) {
-          window.location.href = "./index.html";
-        });
-      }
+
       const canvas = document.getElementById("fractalCanvas");
     const ctx = canvas.getContext("2d");
     let c_real, c_imag, zoom;
@@ -73,6 +67,13 @@
     zoomSlider.addEventListener("input", function() {
       document.getElementById("zoom").value = this.value;
     });
+
+    var button = document.getElementById("backToMenu");
+        if (button) {
+          button.addEventListener("click", function (e) {
+            window.location.href = "./index.html";
+          });
+        }
 
     const colorPicker = document.getElementById("colorPicker");
     colorPicker.addEventListener("input", function() {

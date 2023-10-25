@@ -27,7 +27,7 @@
           <option value="Component.html">Мандельброта і Жюліа</option>
         </select>
       </div>
-      <button class="button1" id="button">
+      <button class="button1" id="backToMenu">
         <h1 class="h12">Повернутись до меню</h1>
       </button>
     </div>
@@ -40,7 +40,7 @@
         canvas.height = 800;
 
 
-        var button = document.getElementById("button");
+        var button = document.getElementById("backToMenu");
         if (button) {
           button.addEventListener("click", function (e) {
             window.location.href = "./index.html";

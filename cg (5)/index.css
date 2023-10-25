@@ -37,15 +37,7 @@
   color: var(--color-black);
   font-family: var(--font-inter);
 }
-.frame-child {
-  position: relative;
-  border-radius: var(--br-mini);
-  background-color: var(--color-lightcyan);
-  border: 1px solid var(--color-gray-200);
-  box-sizing: border-box;
-  width: 421.3px;
-  height: 178.4px;
-}
+
 .div2 {
   position: relative;
   font-size: var(--font-size-6xl);
@@ -58,20 +50,7 @@
   flex-shrink: 0;
   margin-top: -109px;
 }
-.frame2 {
-  cursor: pointer;
-  border: 0;
-  padding: 0;
-  background-color: transparent;
-  width: 421.3px;
-  height: 181.5px;
-  overflow: hidden;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
+
 .div3 {
   position: undefined;
   display: inline-block;
@@ -119,6 +98,19 @@
   align-items: center;
   gap: 24px;
 }
+.divForFrame3 {
+  position: relative;
+  font-size: var(--font-size-base);
+  font-family: var(--font-inter);
+  color: var(--color-black);
+  text-align: center;
+  display: inline-block;
+  width: 230px;
+  height: 80px;
+  flex-shrink: 0;
+  padding: 25px 0px;
+ 
+}
 .div7,
 .frame1,
 .mainmenu {
@@ -138,16 +130,63 @@
   color: var(--color-dimgray);
   font-family: var(--font-inter);
 }
+.frame2 {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  width: 421.3px;
+  height: 181.5px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.frame3 {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  width: 250px;
+  height: 90px;
+  
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 580px 0px 500px 765px;
+}
+.frame-child {
+  position: relative;
+  border-radius: var(--br-mini);
+  background-color: var(--color-lightcyan);
+  border: 1px solid var(--color-gray-200);
+  box-sizing: border-box;
+  width: 421.3px;
+  height: 178.4px;
+}
+.frame3-child {
+  position: relative;
+  border-radius: var(--br-mini);
+  background-color: var(--color-lightcyan);
+  border: 1px solid var(--color-gray-200);
+  box-sizing: border-box;
+  width: 250px;
+  height: 90px;
+}
 .mainmenu {
   position: absolute;
   border-radius: var(--br-5xs);
   background-color: #dce6e3;
-  border: 1px solid var(--color-black);
   box-sizing: border-box;
   width: 100%;
   height: 100%;
   flex-direction: column;
   align-items: flex-start;
-  padding: 78px 29.741943359375px;
+  padding: 31px 75px;
   gap: 63px;
 }
+

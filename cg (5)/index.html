@@ -44,11 +44,13 @@
           </div>
         </div>
       </section>
-      <button class="frame2" id="frame2">
-        <div class="frame-child"></div>
-        <div class="div2">Малювання фракталів</div>
-      </button>
     </div>
+    <button class="frame3" id="frame5">
+      <div class="frame3-child">
+        <div class="divForFrame3">Перейти до навчальних матеріалів</div>
+      </div>
+      
+    </button>
 
     <script>
       var frame2 = document.getElementById("frame2");
@@ -69,6 +71,13 @@
       if (frame4) {
         frame4.addEventListener("click", function (e) {
           window.location.href = "./Component2.html";
+        });
+      }
+
+      var frame5 = document.getElementById("frame5");
+      if (frame5) {
+        frame5.addEventListener("click", function (e) {
+          window.location.href = "./Learning1.html";
         });
       }
       </script>
