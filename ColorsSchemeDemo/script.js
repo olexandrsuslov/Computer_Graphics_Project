@@ -11,11 +11,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const startYInput = document.getElementById('startY');
     const endXInput = document.getElementById('endX');
     const endYInput = document.getElementById('endY');
+    const colorModeSelector = document.getElementById('colorModeSelector');
 
     let originalImageData;
     let brightnessChange = 0;
     let blueSaturationChange = 0;
     let selectedRegion = null;
+    let applyChangesFunction = applyHSVChanges; // Default to HSV mode
 
     imageInput.addEventListener('change', function (event) {
         const file = event.target.files[0];
@@ -67,6 +69,25 @@ document.addEventListener('DOMContentLoaded', function () {
         applyChanges();
     });
 
+    colorModeSelector.addEventListener('change', function () {
+        const selectedMode = colorModeSelector.value;
+        resetImageChanges();
+
+        switch (selectedMode) {
+            case 'hsv':
+                applyChangesFunction = applyHSVChanges;
+                break;
+            case 'cmyk':
+                applyChangesFunction = applyCMYKChanges;
+                break;
+            default:
+                applyChangesFunction = applyHSVChanges;
+                break;
+        }
+
+        applyChanges();
+    });
+    
     function applyChanges() {
         const imageData = new ImageData(new Uint8ClampedArray(originalImageData.data), originalImageData.width, originalImageData.height);
         const data = imageData.data;
@@ -81,24 +102,53 @@ document.addEventListener('DOMContentLoaded', function () {
                 const i = (y * copiedImageCanvas.width + x) * 4;
 
                 if (!selectedRegion || (x >= selectedRegion.startX && x <= selectedRegion.endX && y >= selectedRegion.startY && y <= selectedRegion.endY)) {
-                    const hsv = RGBtoHSV(data[i], data[i + 1], data[i + 2]);
-
-                    hsv.v += brightnessChange / 100;
-
-                    if (hsv.h >= 0.5 && hsv.h <= 0.6667) {
-                        hsv.s += blueSaturationChange / 100;
-                    }
-
-                    const rgb = HSVtoRGB(hsv.h, hsv.s, hsv.v);
-
-                    data[i] = rgb.r;
-                    data[i + 1] = rgb.g;
-                    data[i + 2] = rgb.b;
+                    applyChangesFunction(data, i);
                 }
             }
         }
 
         copiedImageContext.putImageData(imageData, 0, 0);
+    }
+
+    function applyHSVChanges(data, i) {
+        const hsv = RGBtoHSV(data[i], data[i + 1], data[i + 2]);
+
+        hsv.v += brightnessChange / 100;
+
+        if (hsv.h >= 0.5 && hsv.h <= 0.6667) {
+            hsv.s += blueSaturationChange / 100;
+        }
+
+        const rgb = HSVtoRGB(hsv.h, hsv.s, hsv.v);
+
+        data[i] = rgb.r;
+        data[i + 1] = rgb.g;
+        data[i + 2] = rgb.b;
+    }
+
+    function applyCMYKChanges(data, i) {
+        const rgb = { r: data[i], g: data[i + 1], b: data[i + 2] };
+        const cmyk = RGBtoCMYK(rgb.r, rgb.g, rgb.b);
+
+        // Apply changes to CMYK values here
+        // ...
+
+        const newRGB = CMYKtoRGB(cmyk.c, cmyk.m, cmyk.y, cmyk.k);
+
+        data[i] = newRGB.r;
+        data[i + 1] = newRGB.g;
+        data[i + 2] = newRGB.b;
+    }
+
+    function resetImageChanges() {
+        brightnessSlider.value = 0;
+        blueSaturationSlider.value = 100;
+        brightnessChange = 0;
+        blueSaturationChange = 0;
+        selectedRegion = null;
+
+        originalImage.src = '';
+        imageInput.value = '';
     }
 
     function RGBtoHSV(r, g, b) {
@@ -142,5 +192,25 @@ document.addEventListener('DOMContentLoaded', function () {
             g: Math.round(g * 255),
             b: Math.round(b * 255)
         };
+    }
+
+    function RGBtoCMYK(r, g, b) {
+        const c = 1 - r / 255;
+        const m = 1 - g / 255;
+        const y = 1 - b / 255;
+        const k = Math.min(c, m, y);
+        c = (c - k) / (1 - k);
+        m = (m - k) / (1 - k);
+        y = (y - k) / (1 - k);
+
+        return { c, m, y, k };
+    }
+
+    function CMYKtoRGB(c, m, y, k) {
+        const r = 255 * (1 - c) * (1 - k);
+        const g = 255 * (1 - m) * (1 - k);
+        const b = 255 * (1 - y) * (1 - k);
+
+        return { r, g, b };
     }
 });
