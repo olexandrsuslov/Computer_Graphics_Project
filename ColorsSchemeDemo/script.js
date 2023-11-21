@@ -7,18 +7,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const brightnessValue = document.getElementById('brightnessValue');
     const blueSaturationSlider = document.getElementById('blueSaturationSlider');
     const blueSaturationValue = document.getElementById('blueSaturationValue');
+    const startXInput = document.getElementById('startX');
+    const startYInput = document.getElementById('startY');
+    const endXInput = document.getElementById('endX');
+    const endYInput = document.getElementById('endY');
 
-    let originalImageData; // Для зберігання оригінальних даних
-
-    let brightnessChange = 0; // Зміна яскравості
-    let blueSaturationChange = 0; // Зміна насиченості синього
+    let originalImageData;
+    let brightnessChange = 0;
+    let blueSaturationChange = 0;
+    let selectedRegion = null;
 
     imageInput.addEventListener('change', function (event) {
         const file = event.target.files[0];
         const reader = new FileReader();
 
         reader.onload = function (e) {
+            //const originalImage = new Image();
             originalImage.src = e.target.result;
+
             originalImage.onload = function () {
                 copiedImageCanvas.width = originalImage.width;
                 copiedImageCanvas.height = originalImage.height;
@@ -26,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 copiedImageContext.drawImage(originalImage, 0, 0, originalImage.width, originalImage.height);
                 originalImageData = copiedImageContext.getImageData(0, 0, copiedImageCanvas.width, copiedImageCanvas.height);
 
-                applyChanges(); // Застосовуємо всі зміни
+                applyChanges();
             };
         };
 
@@ -45,31 +51,55 @@ document.addEventListener('DOMContentLoaded', function () {
         applyChanges();
     });
 
+    startXInput.addEventListener('input', function () {
+        applyChanges();
+    });
+
+    startYInput.addEventListener('input', function () {
+        applyChanges();
+    });
+
+    endXInput.addEventListener('input', function () {
+        applyChanges();
+    });
+
+    endYInput.addEventListener('input', function () {
+        applyChanges();
+    });
+
     function applyChanges() {
         const imageData = new ImageData(new Uint8ClampedArray(originalImageData.data), originalImageData.width, originalImageData.height);
         const data = imageData.data;
 
-        for (let i = 0; i < data.length; i += 4) {
-            const hsv = RGBtoHSV(data[i], data[i + 1], data[i + 2]);
+        const startX = parseInt(startXInput.value) || 0;
+        const startY = parseInt(startYInput.value) || 0;
+        const endX = Math.min(parseInt(endXInput.value) || copiedImageCanvas.width, copiedImageCanvas.width);
+        const endY = Math.min(parseInt(endYInput.value) || copiedImageCanvas.height, copiedImageCanvas.height);
 
-            // Зміна яскравості в просторі HSV
-            hsv.v += brightnessChange / 100;
+        for (let y = startY; y < endY; y++) {
+            for (let x = startX; x < endX; x++) {
+                const i = (y * copiedImageCanvas.width + x) * 4;
 
-            // Зміна насиченості синього кольору в просторі HSV
-            if (hsv.h >= 0.5 && hsv.h <= 0.6667) {  // Від 180 до 240 градусів
-                hsv.s += blueSaturationChange / 100;
+                if (!selectedRegion || (x >= selectedRegion.startX && x <= selectedRegion.endX && y >= selectedRegion.startY && y <= selectedRegion.endY)) {
+                    const hsv = RGBtoHSV(data[i], data[i + 1], data[i + 2]);
+
+                    hsv.v += brightnessChange / 100;
+
+                    if (hsv.h >= 0.5 && hsv.h <= 0.6667) {
+                        hsv.s += blueSaturationChange / 100;
+                    }
+
+                    const rgb = HSVtoRGB(hsv.h, hsv.s, hsv.v);
+
+                    data[i] = rgb.r;
+                    data[i + 1] = rgb.g;
+                    data[i + 2] = rgb.b;
+                }
             }
-
-            const rgb = HSVtoRGB(hsv.h, hsv.s, hsv.v);
-
-            data[i] = rgb.r;
-            data[i + 1] = rgb.g;
-            data[i + 2] = rgb.b;
         }
 
         copiedImageContext.putImageData(imageData, 0, 0);
     }
-
 
     function RGBtoHSV(r, g, b) {
         var max = Math.max(r, g, b), min = Math.min(r, g, b),
