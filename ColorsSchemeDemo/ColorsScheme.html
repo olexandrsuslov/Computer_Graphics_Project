@@ -9,8 +9,19 @@
 <body>
     <input type="file" id="imageInput" accept="image/*">
     <div id="imageContainer">
-        <img id="originalImage" alt="Завантажте зображення">
+        <div id="originalImageContainer">
+            <img id="originalImage" alt="Завантажте зображення">
+        </div>
         <canvas id="copiedImage"></canvas>
+    </div>
+    <div id="controls">
+        <label for="brightnessSlider">Яскравість:</label>
+        <input type="range" id="brightnessSlider" min="-100" max="100" value="0">
+        <span id="brightnessValue">0</span>
+
+        <label for="blueSaturationSlider">Насиченість синього кольору:</label>
+        <input type="range" id="blueSaturationSlider" min="0" max="200" value="100">
+        <span id="blueSaturationValue">0</span>
     </div>
     <script src="script.js"></script>
 </body>

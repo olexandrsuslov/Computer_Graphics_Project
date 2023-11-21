@@ -3,6 +3,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const originalImage = document.getElementById('originalImage');
     const copiedImageCanvas = document.getElementById('copiedImage');
     const copiedImageContext = copiedImageCanvas.getContext('2d');
+    const brightnessSlider = document.getElementById('brightnessSlider');
+    const brightnessValue = document.getElementById('brightnessValue');
+    const blueSaturationSlider = document.getElementById('blueSaturationSlider');
+    const blueSaturationValue = document.getElementById('blueSaturationValue');
+
+    let originalImageData; // Для зберігання оригінальних даних
+
+    let brightnessChange = 0; // Зміна яскравості
+    let blueSaturationChange = 0; // Зміна насиченості синього
 
     imageInput.addEventListener('change', function (event) {
         const file = event.target.files[0];
@@ -13,20 +22,44 @@ document.addEventListener('DOMContentLoaded', function () {
             originalImage.onload = function () {
                 copiedImageCanvas.width = originalImage.width;
                 copiedImageCanvas.height = originalImage.height;
+
                 copiedImageContext.drawImage(originalImage, 0, 0, originalImage.width, originalImage.height);
-                applyHSVConversion();
+                originalImageData = copiedImageContext.getImageData(0, 0, copiedImageCanvas.width, copiedImageCanvas.height);
+
+                applyChanges(); // Застосовуємо всі зміни
             };
         };
 
         reader.readAsDataURL(file);
     });
 
-    function applyHSVConversion() {
-        const imageData = copiedImageContext.getImageData(0, 0, copiedImageCanvas.width, copiedImageCanvas.height);
+    brightnessSlider.addEventListener('input', function () {
+        brightnessValue.textContent = this.value;
+        brightnessChange = parseInt(this.value);
+        applyChanges();
+    });
+
+    blueSaturationSlider.addEventListener('input', function () {
+        blueSaturationValue.textContent = this.value;
+        blueSaturationChange = parseInt(this.value);
+        applyChanges();
+    });
+
+    function applyChanges() {
+        const imageData = new ImageData(new Uint8ClampedArray(originalImageData.data), originalImageData.width, originalImageData.height);
         const data = imageData.data;
 
         for (let i = 0; i < data.length; i += 4) {
             const hsv = RGBtoHSV(data[i], data[i + 1], data[i + 2]);
+
+            // Зміна яскравості в просторі HSV
+            hsv.v += brightnessChange / 100;
+
+            // Зміна насиченості синього кольору в просторі HSV
+            if (hsv.h >= 0.5 && hsv.h <= 0.6667) {  // Від 180 до 240 градусів
+                hsv.s += blueSaturationChange / 100;
+            }
+
             const rgb = HSVtoRGB(hsv.h, hsv.s, hsv.v);
 
             data[i] = rgb.r;
@@ -36,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         copiedImageContext.putImageData(imageData, 0, 0);
     }
+
 
     function RGBtoHSV(r, g, b) {
         var max = Math.max(r, g, b), min = Math.min(r, g, b),
