@@ -128,13 +128,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function applyCMYKChanges(data, i) {
         const rgb = { r: data[i], g: data[i + 1], b: data[i + 2] };
-        const cmyk = RGBtoCMYK(rgb.r, rgb.g, rgb.b);
-
+        let cmyk = RGBtoCMYK(rgb.r / 255, rgb.g / 255, rgb.b / 255);
+    
         // Apply changes to CMYK values here
-        // ...
+        cmyk.k -= brightnessChange / 100; // Зміна яскравості
+        
+       // console.log("M "+cmyk.m);
+
+        if (cmyk.c > 0.15 && cmyk.m > 0.05) {
+            // Застосування змін до насиченості синього (можна змінювати умову за потребою)
+            (cmyk.c + blueSaturationChange / 100) > 1 ? cmyk.c =1 : cmyk.c += blueSaturationChange / 100;
+            (cmyk.m + blueSaturationChange / 100) > 1 ? cmyk.m =1 : cmyk.m += blueSaturationChange / 100;
+       }
 
         const newRGB = CMYKtoRGB(cmyk.c, cmyk.m, cmyk.y, cmyk.k);
-
+    
         data[i] = newRGB.r;
         data[i + 1] = newRGB.g;
         data[i + 2] = newRGB.b;
@@ -195,22 +203,19 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function RGBtoCMYK(r, g, b) {
-        const c = 1 - r / 255;
-        const m = 1 - g / 255;
-        const y = 1 - b / 255;
-        const k = Math.min(c, m, y);
-        c = (c - k) / (1 - k);
-        m = (m - k) / (1 - k);
-        y = (y - k) / (1 - k);
-
+        const k = Math.min(1 - r, 1 - g, 1 - b);
+        const c = (1 - r - k) / (1 - k);
+        const m = (1 - g - k) / (1 - k);
+        const y = (1 - b - k) / (1 - k);
+    
         return { c, m, y, k };
     }
-
+    
     function CMYKtoRGB(c, m, y, k) {
         const r = 255 * (1 - c) * (1 - k);
         const g = 255 * (1 - m) * (1 - k);
         const b = 255 * (1 - y) * (1 - k);
-
+    
         return { r, g, b };
     }
 });
