@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const endXInput = document.getElementById('endX');
     const endYInput = document.getElementById('endY');
     const colorModeSelector = document.getElementById('colorModeSelector');
+    const saveToFileBtn = document.getElementById('saveToFileBtn');
 
     let originalImageData;
     let brightnessChange = 0;
@@ -50,6 +51,18 @@ document.addEventListener('DOMContentLoaded', function () {
         // Вивід значень RGB у блок pixelInfo
         document.getElementById('rgbValues').textContent = `${pixelData[0]}, ${pixelData[1]}, ${pixelData[2]}`;
     });
+
+    saveToFileBtn.addEventListener('click', saveCanvasToFile);
+
+    function saveCanvasToFile() {
+        const canvas = document.getElementById('copiedImage');
+        const dataURL = canvas.toDataURL(); // Отримати URL-адресу у форматі base64
+
+        const link = document.createElement('a');
+        link.href = dataURL;
+        link.download = 'ColorSchemeImage.png'; // Ім'я файлу для завантаження
+        link.click();
+    }
 
     brightnessSlider.addEventListener('input', function () {
         brightnessValue.textContent = this.value;
