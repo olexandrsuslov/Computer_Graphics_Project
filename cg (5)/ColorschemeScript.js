@@ -50,6 +50,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Вивід значень RGB у блок pixelInfo
         document.getElementById('rgbValues').textContent = `${pixelData[0]}, ${pixelData[1]}, ${pixelData[2]}`;
+        const hsv = RGBtoHSV(pixelData[0], pixelData[1], pixelData[2]);
+        // Вивід значень HSV
+        document.getElementById('hsvValues').textContent = `H: ${hsv.h.toFixed(2)}, S: ${hsv.s.toFixed(2)}, V: ${hsv.v.toFixed(2)}`;
+    
+        // Конвертація RGB у CMYK
+        const cmyk = RGBtoCMYK(pixelData[0], pixelData[1], pixelData[2]);
+        // Вивід значень CMYK
+        //document.getElementById('cmykValues').textContent = `C: ${cmyk.c.toFixed(2)}, M: ${cmyk.m.toFixed(2)}, Y: ${cmyk.y.toFixed(2)}, K: ${cmyk.k.toFixed(2)}`;
     });
 
     saveToFileBtn.addEventListener('click', saveCanvasToFile);
@@ -191,10 +199,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         switch (max) {
             case min: h = 0; break;
-            case r: h = (g - b) + d * (g < b ? 6: 0); h /= 6 * d; break;
+            case r: h = (g - b) + d * (g < b ? 6: 0);h /= 6 * d; break;
             case g: h = (b - r) + d * 2; h /= 6 * d; break;
             case b: h = (r - g) + d * 4; h /= 6 * d; break;
         }
+        
 
         return {
             h: h,

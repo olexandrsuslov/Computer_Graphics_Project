@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transform a Square</title>
+    <style> .main-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .grid-row {
+        display: flex;
+    }
+
+    .d-flex.align-items-center {
+        margin-right: 20px; /* Додайте відступ для відокремлення елементів */
+    }
+
+    .options-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #gridCanvas,
+        #squareCanvas {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        #cardContainer {
+            max-width: 400px; /* Задайте максимальну ширину для елементів у лівому стовпці */
+            z-index: 1; /* Підняття на один рівень вище, ніж канваси */
+        }
+</style>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="grid-row">
+            <div class="d-flex align-items-center">
+                <div class="overflow-hidden" id="cardContainer">
+                    <h1 class="heading-1">Transform a Square</h1>
+                    <div class="mt-4 mb-1 d-flex flex-column">
+                        <div class="d-flex justify-content-between mb-2 h-100">
+                            <label for="step" class="label">Step</label>
+                            <div class="label" id="stepLabel">0 px</div>
+                        </div>
+                        <input type="range" class="slider" min="10" max="200" name="step" id="stepInput" />
+                    </div>
+                    <div class="d-flex pt-3 align-items-center">
+                        <div class="square-img"></div>
+                        <div class="points-input">
+                            <div class="point-input-group">
+                                <label for="ax" class="label">A (x)</label>
+                                <input type="number" name="ax" class="input-num body-large" placeholder="Enter X value" id="axInput" />
+                            </div>
+                            <div class="point-input-group">
+                                <label for="ay" class="label">A (y)</label>
+                                <input type="number" name="ay" class="input-num body-large" placeholder="Enter Y value" id="ayInput" />
+                            </div>
+                            <div class="point-input-group">
+                                <label for="cx" class="label">C (x)</label>
+                                <input type="number" name="cx" class="input-num body-large" placeholder="Enter X value" id="cxInput" />
+                            </div>
+                            <div class="point-input-group">
+                                <label for="cy" class="label">C (y)</label>
+                                <input type="number" name="cy" class="input-num body-large" placeholder="Enter Y value" id="cyInput" />
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class='d-flex flex-column justify-content-center'>
+                        <div class='d-flex justify-content-between mb-2 mt-4 h-100'>
+                            <label for='scale' class='label'>
+                                Scale
+                            </label>
+                            <div class='label' id='scaleLabel'>
+                                0
+                            </div>
+                        </div>
+                        <input
+                            type='range'
+                            class='slider'
+                            min='-20'
+                            max='20'
+                            name='scale'
+                            id='scaleInput'
+                            value='0'
+                           
+                        />
+                    </div>
+                    <div class='d-flex flex-column justify-content-center mt-3'>
+                        <div class='d-flex justify-content-between mb-2 h-100'>
+                            <label for='rotate' class='label'>
+                                Rotate
+                            </label>
+                            <div class='label' id='rotateLabel'>
+                                0°
+                            </div>
+                        </div>
+                        <input
+                            type='range'
+                            class='slider'
+                            min='-360'
+                            max='360'
+                            name='rotate'
+                            id='rotateInput'
+                            value='0'
+                            
+                        />
+                    </div>
+                    <div class='d-flex flex-column justify-content-center mt-3'>
+                        <div class='label'>
+                            Translate
+                        </div>
+                        <div class='d-flex mt-1'>
+                            <div class='point-input-group'>
+                                <label for='vx' class='label'>
+                                    X
+                                </label>
+                                <input
+                                    type='number'
+                                    name='vx'
+                                    class='input-num body-large'
+                                    placeholder='Enter X value'
+                                    id="vxInput"
+                                    value='0'
+                                />
+                            </div>
+                            <div class='point-input-group ms-4'>
+                                <label for='vy' class='label'>
+                                    Y
+                                </label>
+                                <input
+                                    type='number'
+                                    name='vy'
+                                    class='input-num body-large'
+                                    placeholder='Enter Y value'
+                                    id="vyInput"
+                                    value='0'
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex mt-5">
+                        <button class="button button-color-purple button-primary body-large flex-grow-1" id="AnimateBtn">
+                            <span>Animate</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-column justify-content-center align-items-center">
+                <div class="options-card col-card-square">
+                    <canvas height="1000px" width="1000px" id="gridCanvas"></canvas>
+                    <canvas height="1000px" width="1000px" id="squareCanvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="MovingAnimationScript.js"></script>
+</body>
+
+</html>
