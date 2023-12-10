@@ -39,9 +39,216 @@ var transformations = {
   };
 
   var isAnimating = false;
-  const orderArray =[3,2,1];
+  var order = 1;
   var squareCoordinates ={};
+  var squareCoordinatesCopy ={};
 
+
+//For animations
+const isSquare = (a, c) => {
+    if (!a || !c) return false;
+    console.log(a.x - c.x, a.y - c.y, ': ', c.x - a.x, a.y - c.y);
+    return a.x - c.x === a.y - c.y || c.x - a.x === a.y - c.y;
+  };
+  
+  function applyTransformations() {
+    order=3;
+    var coordinatesBuff = squareCoordinates;
+    animateTransformations().then(() => {
+        order=2;
+        
+        squareCoordinates = squareCoordinatesCopy;
+        animateTransformations().then(()=>{
+            order=1;
+            squareCoordinates = squareCoordinatesCopy;
+            animateTransformations().then(()=>{
+                squareCoordinates = coordinatesBuff;
+            });
+            
+        });
+    });
+
+}  
+  
+  function animateTransformations() {
+    return new Promise((resolve) => {
+      let startTime = null;
+      const durationMiliseconds = 1000;
+  
+      function animate(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const elapsedTime = timestamp - startTime;
+  
+        const progress = Math.min(elapsedTime / durationMiliseconds, 1);
+  
+        const currentCoordinates = getCurrentCoordinates(progress);
+  
+        const canvas = squareCanvas;
+        const ctx = canvas.getContext('2d');
+        drawRectangle(ctx, currentCoordinates, step);
+  
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          resolve();
+        }
+      }
+  
+      requestAnimationFrame(animate);
+    });
+  }
+  
+  function getCurrentCoordinates(progress) {
+    let transformMatrix = [
+      [1, 0, 0],
+      [0, 1, 0],
+      [0, 0, 1],
+    ];
+
+      switch (order) {
+        case 1:
+          transformMatrix = multiplyMatrix(
+            transformMatrix,
+            createTranslationMatrix(transformations.vector, progress)
+          );
+          break;
+        case 2:
+          transformMatrix = multiplyMatrix(
+            transformMatrix,
+            createRotationMatrix(transformations.rotate*(-1), progress)
+          );
+          break;
+        case 3:
+          transformMatrix = multiplyMatrix(
+            transformMatrix,
+            createScalingMatrix(transformations.scale, progress)
+          );
+          break;
+        default:
+          break;
+      };
+  
+    return applyTransformationMatrix(squareCoordinates, transformMatrix);
+  }
+  
+  function createTranslationMatrix(vector, progress) {
+    return [
+      [1, 0, 0],
+      [0, 1, 0],
+      [vector.x * progress, vector.y * progress, 1],
+    ];
+  }
+  
+  function createRotationMatrix(angle, progress) {
+    const rad = ((angle * Math.PI) / 180) * progress;
+
+    const centerX = (parseFloat(squareCoordinates.a.x) + parseFloat(squareCoordinates.c.x)) / 2;
+    const centerY = (parseFloat(squareCoordinates.a.y) + parseFloat(squareCoordinates.c.y)) / 2;
+    
+    console.log("Diagonal X "+diagonal.a.x + " " + diagonal.c.x);
+    console.log("center X "+centerX);
+    console.log("Diagonal Y "+diagonal.a.y + " "+ diagonal.c.y);
+    console.log("center Y "+centerY);
+    
+    const cosTheta = Math.cos(rad);
+  const sinTheta = Math.sin(rad);
+
+  return [
+    [cosTheta, sinTheta, 0],
+    [-sinTheta, cosTheta, 0],
+    [(-centerX*cosTheta)+(centerY*sinTheta)+centerX, (-centerX*sinTheta)-(centerY*cosTheta)+centerY, 1],
+  ];
+
+  }
+  
+  function createScalingMatrix(scale, progress) {
+    const interpolatedScale = 1 + (scale - 1) * progress;
+    return [
+      [interpolatedScale, 0, 0],
+      [0, interpolatedScale, 0],
+      [0, 0, 1],
+    ];
+  }
+  
+  function applyTransformationMatrix(coordinates, transformMatrix) {
+    const coordinatesMatrix = createMatrixFromCoordinates(coordinates);
+    const transformedCoordinates = multiplyMatrix(
+      coordinatesMatrix,
+      transformMatrix
+    );
+    squareCoordinatesCopy =createCoordinatesFromMatrix(transformedCoordinates);
+    return createCoordinatesFromMatrix(transformedCoordinates);
+  }
+  
+  function createMatrixFromCoordinates(coordinates) {
+   // console.log(coordinates);
+    const { a, b, c, d } = coordinates;
+    return [
+      [a.x, a.y, 1],
+      [b.x, b.y, 1],
+      [c.x, c.y, 1],
+      [d.x, d.y, 1],
+    ];
+  }
+  
+  function createCoordinatesFromMatrix(matrix) {
+    return {
+      a: {
+        x: matrix[0][0],
+        y: matrix[0][1],
+      },
+      b: {
+        x: matrix[1][0],
+        y: matrix[1][1],
+      },
+      c: {
+        x: matrix[2][0],
+        y: matrix[2][1],
+      },
+      d: {
+        x: matrix[3][0],
+        y: matrix[3][1],
+      },
+    };
+  }
+  
+  function multiplyMatrix(a, b) {
+    const aNumRows = a.length;
+    const aNumCols = a[0].length;
+    const bNumCols = b[0].length;
+    const result = new Array(aNumRows);
+    for (let r = 0; r < aNumRows; ++r) {
+      result[r] = new Array(bNumCols);
+      for (let c = 0; c < bNumCols; ++c) {
+        result[r][c] = 0;
+        for (let i = 0; i < aNumCols; ++i) {
+          result[r][c] += a[r][i] * b[i][c];
+        }
+      }
+    }
+    return result;
+  }
+  
+  const drawRectangle = (ctx, coordinates, step) => {
+    const modifiedCoordinates = Object.values(coordinates).map((coord) => ({
+      x: coord.x * step + 350,
+      y: 350 - coord.y * step,
+    }));
+  
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#c74440';
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  
+    ctx.beginPath();
+    ctx.moveTo(...Object.values(modifiedCoordinates[0]));
+    ctx.lineTo(...Object.values(modifiedCoordinates[1]));
+    ctx.lineTo(...Object.values(modifiedCoordinates[2]));
+    ctx.lineTo(...Object.values(modifiedCoordinates[3]));
+    ctx.lineTo(...Object.values(modifiedCoordinates[0]));
+  
+    ctx.stroke();
+  };
+  
   const clearCanvas = (canvas, ctx) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   };
@@ -199,221 +406,6 @@ function setTranslateVector(axis, value)
         [axis]: parseFloat(value),
       };
 }
-
-//For animations
-const isSquare = (a, c) => {
-    if (!a || !c) return false;
-    console.log(a.x - c.x, a.y - c.y, ': ', c.x - a.x, a.y - c.y);
-    return a.x - c.x === a.y - c.y || c.x - a.x === a.y - c.y;
-  };
-  
-  function applyTransformations() {
-    isAnimating = true;
-    animateTransformations().then(() => {
-      isAnimating = false;
-    });
-  }
-  
-  function animateTransformations() {
-    return new Promise((resolve) => {
-      let startTime = null;
-      const durationMiliseconds = 1000;
-  
-      function animate(timestamp) {
-        if (!startTime) startTime = timestamp;
-        const elapsedTime = timestamp - startTime;
-  
-        const progress = Math.min(elapsedTime / durationMiliseconds, 1);
-  
-        const currentCoordinates = getCurrentCoordinates(progress);
-  
-        const canvas = squareCanvas;
-        const ctx = canvas.getContext('2d');
-        drawRectangle(ctx, currentCoordinates, step);
-  
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        } else {
-          resolve();
-        }
-      }
-  
-      requestAnimationFrame(animate);
-    });
-  }
-  
-  function getCurrentCoordinates(progress) {
-    let transformMatrix = [
-      [1, 0, 0],
-      [0, 1, 0],
-      [0, 0, 1],
-    ];
-  
-    orderArray.forEach((value) => {
-      switch (value) {
-        case 1:
-          transformMatrix = multiplyMatrix(
-            transformMatrix,
-            createTranslationMatrix(transformations.vector, progress)
-          );
-          break;
-        case 2:
-          transformMatrix = multiplyMatrix(
-            transformMatrix,
-            createRotationMatrix(transformations.rotate*(-1), progress)
-          );
-          break;
-        case 3:
-          transformMatrix = multiplyMatrix(
-            transformMatrix,
-            createScalingMatrix(transformations.scale, progress)
-          );
-          break;
-        default:
-          break;
-      }
-    });
-  
-    return applyTransformationMatrix(squareCoordinates, transformMatrix);
-  }
-  
-  function createTranslationMatrix(vector, progress) {
-    return [
-      [1, 0, 0],
-      [0, 1, 0],
-      [vector.x * progress, vector.y * progress, 1],
-    ];
-  }
-  
-  function createRotationMatrix(angle, progress) {
-    const rad = ((angle * Math.PI) / 180) * progress;
-
-    const centerX = (parseFloat(diagonal.a.x) + parseFloat(diagonal.c.x)) / 2;
-    const centerY = (parseFloat(diagonal.a.y) + parseFloat(diagonal.c.y)) / 2;
-    
-    console.log("Diagonal x "+diagonal.a.x + " " + diagonal.c.x);
-    console.log("center x"+centerX);
-    console.log("Diagonal Y "+diagonal.a.y + " "+ diagonal.c.y);
-    console.log("center Y "+centerY);
-    
-    const cosTheta = Math.cos(rad);
-  const sinTheta = Math.sin(rad);
-  const translateToOrigin = [
-    [1, 0, 0],
-    [0, 1, 0],
-    [-centerX, -centerY, 1],
-  ];
-
-  const rotate = [
-    [cosTheta, sinTheta, 0],
-    [-sinTheta, cosTheta, 0],
-    [0, 0, 1],
-  ];
-
-  const translateBack = [
-    [1, 0, 0],
-    [0, 1, 0],
-    [centerX, centerY, 1],
-  ];
-
-  // Multiply the matrices: translateBack * rotate * translateToOrigin
-  //const resultMatrix = multiplyMatrix(translateBack, multiplyMatrix(rotate, translateToOrigin));
- 
-  return [
-    [cosTheta, sinTheta, 0],
-    [-sinTheta, cosTheta, 0],
-    [(-centerX*cosTheta)+(centerY*sinTheta)+centerX, (-centerX*sinTheta)-(centerY*cosTheta)+centerY, 1],
-  ];
-  //return resultMatrix;
-  }
-  
-  function createScalingMatrix(scale, progress) {
-    const interpolatedScale = 1 + (scale - 1) * progress;
-    return [
-      [interpolatedScale, 0, 0],
-      [0, interpolatedScale, 0],
-      [0, 0, 1],
-    ];
-  }
-  
-  function applyTransformationMatrix(coordinates, transformMatrix) {
-    const coordinatesMatrix = createMatrixFromCoordinates(coordinates);
-    const transformedCoordinates = multiplyMatrix(
-      coordinatesMatrix,
-      transformMatrix
-    );
-    return createCoordinatesFromMatrix(transformedCoordinates);
-  }
-  
-  function createMatrixFromCoordinates(coordinates) {
-   // console.log(coordinates);
-    const { a, b, c, d } = coordinates;
-    return [
-      [a.x, a.y, 1],
-      [b.x, b.y, 1],
-      [c.x, c.y, 1],
-      [d.x, d.y, 1],
-    ];
-  }
-  
-  function createCoordinatesFromMatrix(matrix) {
-    return {
-      a: {
-        x: matrix[0][0],
-        y: matrix[0][1],
-      },
-      b: {
-        x: matrix[1][0],
-        y: matrix[1][1],
-      },
-      c: {
-        x: matrix[2][0],
-        y: matrix[2][1],
-      },
-      d: {
-        x: matrix[3][0],
-        y: matrix[3][1],
-      },
-    };
-  }
-  
-  function multiplyMatrix(a, b) {
-    const aNumRows = a.length;
-    const aNumCols = a[0].length;
-    const bNumCols = b[0].length;
-    const result = new Array(aNumRows);
-    for (let r = 0; r < aNumRows; ++r) {
-      result[r] = new Array(bNumCols);
-      for (let c = 0; c < bNumCols; ++c) {
-        result[r][c] = 0;
-        for (let i = 0; i < aNumCols; ++i) {
-          result[r][c] += a[r][i] * b[i][c];
-        }
-      }
-    }
-    return result;
-  }
-  
-  const drawRectangle = (ctx, coordinates, step) => {
-    const modifiedCoordinates = Object.values(coordinates).map((coord) => ({
-      x: coord.x * step + 350,
-      y: 350 - coord.y * step,
-    }));
-  
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = '#c74440';
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  
-    ctx.beginPath();
-    ctx.moveTo(...Object.values(modifiedCoordinates[0]));
-    ctx.lineTo(...Object.values(modifiedCoordinates[1]));
-    ctx.lineTo(...Object.values(modifiedCoordinates[2]));
-    ctx.lineTo(...Object.values(modifiedCoordinates[3]));
-    ctx.lineTo(...Object.values(modifiedCoordinates[0]));
-  
-    ctx.stroke();
-  };
-  
   // EventListeners and oninputs
 stepInput.addEventListener('input', function () {
     stepLabel.textContent = this.value;
