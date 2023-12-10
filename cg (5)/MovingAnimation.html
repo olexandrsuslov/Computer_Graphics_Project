@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+
+    <link rel="stylesheet" href="./MovingAnimation.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap"
+    />
+    <link rel="stylesheet" href="MovingAnimation.css" />
+    
+
+</head>
+
+<body>
+  <div class="main-container">
+      <div class="grid-row">
+          <div class="leftColumn">
+              <div id="cardContainer">
+                  <h1 class="heading-1">Афінні перетворення квадрата</h1>
+                  <div>
+                      <div>
+                          <label for="step" class="label">Збільшення координатної сітки</label>
+                          <div class="label" id="stepLabel">0</div>
+                      </div>
+                      <input type="range" class="slider" min="10" max="200" name="step" id="stepInput" value="0" />
+                  </div>
+                  <div class="d-flex pt-3 align-items-center">
+                      <div class="square-img"></div>
+                      <div class="points-input">
+                        <label>Введіть координати діагоналі квадрата:</label>
+                          <div class="point-input-group">
+                              <label for="ax" class="label">A (x)</label>
+                              <input type="number" name="ax" placeholder="Enter X value" id="axInput" />
+                          </div>
+                          <div class="point-input-group">
+                              <label for="ay" class="label">A (y)</label>
+                              <input type="number" name="ay" placeholder="Enter Y value" id="ayInput" />
+                          </div>
+                          <div class="point-input-group">
+                              <label for="cx" class="label">C (x)</label>
+                              <input type="number" name="cx" placeholder="Enter X value" id="cxInput" />
+                          </div>
+                          <div class="point-input-group">
+                              <label for="cy" class="label">C (y)</label>
+                              <input type="number" name="cy" placeholder="Enter Y value" id="cyInput" />
+                          </div>
+                      </div>
+                  </div>
+                 
+                  <div>
+                    <div>
+                        <label for='scale' class='label'>
+                            Збільшення
+                        </label>
+                        <div class='label' id='scaleLabel'>
+                            0
+                        </div>
+                    </div>
+                    <input
+                        type='number'
+                        
+                        placeholder='Enter scale value'
+                        id='scaleInputNumber'
+                        value='1'
+                    />
+                    <input
+                        type='range'
+                        class='slider'
+                        min='-20'
+                        max='20'
+                        name='scale'
+                        id='scaleInput'
+                        value='1'
+                    />
+                    
+                </div>
+                
+                <div>
+                    <div>
+                        <label for='rotate' class='label'>
+                            Поворот
+                        </label>
+                        <div class='label' id='rotateLabel'>
+                            0°
+                        </div>
+                    </div>
+                    <input
+                        type='number'
+                        
+                        placeholder='Enter rotation value'
+                        id='rotateInputNumber'
+                        value='0'
+                    />
+                    <input
+                        type='range'
+                        class='slider'
+                        min='-360'
+                        max='360'
+                        name='rotate'
+                        id='rotateInput'
+                        value='0'
+                    />
+                    
+                </div>
+                  <div >
+                      <div class='label'>
+                          Рух
+                      </div>
+                      <div class='d-flex mt-1'>
+                          <div class='point-input-group'>
+                              <label for='vx' class='label'>
+                                  X
+                              </label>
+                              <input
+                                  type='number'
+                                  name='vx'
+                                 
+                                  placeholder='Enter X value'
+                                  id="vxInput"
+                                  value='0'
+                              />
+                          </div>
+                          <div>
+                              <label for='vy' class='label'>
+                                  Y
+                              </label>
+                              <input
+                                  type='number'
+                                  name='vy'
+                                  
+                                  placeholder='Enter Y value'
+                                  id="vyInput"
+                                  value='0'
+                              />
+                          </div>
+                      </div>
+                  </div>
+                
+                  
+                  <div>
+                      <button class="button" id="AnimateBtn">
+                          <span>Відтворити анімацію</span>
+                      </button>
+                      <button class="button" id="DrawSquareBtn">
+                        <span>Намалювати квадрат</span>
+                      </button>
+                  </div>
+                  <div>
+                    <button class="button" id="backToMenuBtn"><span>Повернутись до меню</span></button>
+                    <button class="button" id="SaveImgBtn"><span>Зберегти зображення</span></button>
+                  </div>
+              </div>
+          </div>
+          <div class="d-flex flex-column justify-content-center align-items-center">
+                  <canvas height="700px" width="700px" id="gridCanvas"></canvas>
+                  <canvas height="700px" width="700px" id="squareCanvas"></canvas>
+              </div>
+          </div>
+      </div>
+
+  <script src="MovingAnimationScript.js"></script>
+
+    <script>
+      var button = document.getElementById("backToMenuBtn");
+      if (button) {
+        button.addEventListener("click", function (e) {
+          window.location.href = "./index.html";
+        });
+      }
+      </script>
+  </body>
+</html>
