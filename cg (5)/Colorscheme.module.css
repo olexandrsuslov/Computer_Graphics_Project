@@ -13,6 +13,7 @@ body {
   padding: 20px;
   background-color: rgb(205, 238, 246);
   border: 1px solid black;
+  border-radius: 10px;
   width: 167px;
   height: 600px;
 }

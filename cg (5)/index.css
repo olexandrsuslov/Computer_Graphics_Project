@@ -179,7 +179,7 @@
 }
 .mainmenu {
   position: absolute;
-  border-radius: var(--br-5xs);
+
   background-color: #dce6e3;
   box-sizing: border-box;
   width: 100%;
