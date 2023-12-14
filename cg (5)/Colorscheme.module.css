@@ -18,13 +18,20 @@ body {
   height: 600px;
 }
 
-button {
-  display: block;
-  background-color: rgb(125, 125, 125);
-  border: 1px solid black;
-  margin-bottom: 10px;
+.button {
+  margin-top: 10px;
   padding: 10px;
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
   cursor: pointer;
+}
+.button:hover {
+  background-color: #c1f9f5;
 }
 .file-input-label {
   cursor: pointer;
@@ -83,12 +90,4 @@ select {
   flex-direction: column;
 }
 
-button#backToMenuBtn,
-button#saveToFileBtn {
-  display: block;
-  background-color: white;
-  border: 1px solid black;
-  margin-bottom: 10px;
-  padding: 10px;
-  cursor: pointer;
-}
+

@@ -78,16 +78,21 @@
   align-items: center;
 }
 .button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
   cursor: pointer;
-  border: 1px solid var(--color-gray-200);
-  padding: var(--padding-7xs) 0;
-  background-color: var(--color-whitesmoke);
-  border-radius: var(--br-11xs);
-  box-sizing: border-box;
-  width: 358px;
-  height: 48px;
-  flex-direction: row;
-  justify-content: flex-end;
+  
+}
+
+.button:hover {
+  background-color: #c1f9f5;
 }
 .frame10,
 .frame9 {
